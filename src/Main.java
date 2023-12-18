@@ -1,6 +1,5 @@
 import Classes.Images.Image;
 import Classes.Prediction.Prediction;
-
 import static Classes.Images.IOImage.*;
 
 public class Main {
@@ -8,6 +7,6 @@ public class Main {
         Image image = new Image() ;
         image.setPixels(readImage(System.getProperty("user.dir") + "\\src\\image.png"));
         Prediction prediction = new Prediction();
-        prediction.compress(image);
+        prediction.compress(image, 4);
     }
 }

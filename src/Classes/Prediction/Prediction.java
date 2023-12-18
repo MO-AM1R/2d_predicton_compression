@@ -1,10 +1,12 @@
 package Classes.Prediction;
 import Classes.Images.Image;
 import Classes.Pixel.Pixel;
+import Classes.Quantization.Quantization;
+
 import static Classes.Pixel.Pixel.*;
 
 public class Prediction {
-    public void compress(Image image){
+    public void compress(Image image, int levels){
         Image quantizedDifference = new Image(image.getWidth(), image.getHeight(), image.getPixels()) ;
         Image quantizedImage = new Image(image.getWidth(), image.getHeight(), image.getPixels()) ;
         Image predicted = new Image(image.getWidth(), image.getHeight(), image.getPixels()) ;
@@ -35,6 +37,9 @@ public class Prediction {
                 minDiff = Integer.min(difference.getPixel(i, j).getColor(), minDiff);
             }
         }
+        Quantization quantization = new Quantization();
+        quantization.quantize(minDiff, maxDiff + 1, levels);
+        System.out.println(quantization);
     }
     public void deCompress(){
 
