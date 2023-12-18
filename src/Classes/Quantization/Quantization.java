@@ -1,4 +1,6 @@
 package Classes.Quantization;
+import Classes.Pixel.Pixel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,5 +44,9 @@ public class Quantization {
             }
         }
         return 0 ;
+    }
+
+    public int getQ(Pixel pixel) {
+        return quantizationTable.get(pixel.getColor()).code ;
     }
 }

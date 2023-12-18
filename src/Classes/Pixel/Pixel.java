@@ -109,4 +109,8 @@ public class Pixel implements Comparable<Pixel>{
     public Pixel add(Pixel b) {
         return new Pixel((this.color + b.getColor()), (this.alpha + b.getAlpha()));
     }
+
+    public void setColor(int color) {
+        this.color = color ;
+    }
 }
