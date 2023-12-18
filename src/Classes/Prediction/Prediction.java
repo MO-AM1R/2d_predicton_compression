@@ -1,10 +1,8 @@
 package Classes.Prediction;
-import Classes.Images.Image;
-import Classes.Pixel.Pixel;
-import Classes.Quantization.Quantization;
-
+import static Classes.Prediction.PredictionHelper.*;
 import static Classes.Images.IOImage.writeImage;
-import static Classes.Pixel.Pixel.*;
+import Classes.Quantization.Quantization;
+import Classes.Images.Image;
 
 public class Prediction {
     public void compress(Image image, int levels){
@@ -12,86 +10,37 @@ public class Prediction {
         Image predicted = new Image(image.getWidth(), image.getHeight(), image.getPixels()) ;
         Image difference = new Image(image.getWidth(), image.getHeight(), image.getPixels()) ;
 
-        int minDiff = Integer.MAX_VALUE, maxDiff = Integer.MIN_VALUE ;
+        // fill predicted image
+        int[] values = fillPredicted(image, predicted, difference) ;
+        int minDiff = values[0], maxDiff = values[1] ;
 
-        for (int i = 1; i < image.getWidth(); i++) {
-            for (int j = 1; j < image.getHeight(); j++) {
-                Pixel a = image.getPixel(i, j - 1);
-                Pixel b = image.getPixel(i - 1, j - 1);
-                Pixel c = image.getPixel(i - 1, j);
-                Pixel ans;
-
-                if (b.compareTo(min(a, c)) <= 0){
-                    ans = new Pixel(max(a, c));
-                }
-                else if (b.compareTo(max(a, c)) >= 0){
-                    ans = new Pixel(min(a, c));
-                }
-                else{
-                    ans = (a.add(c)).minus(b) ;
-                }
-                predicted.setPixel(i, j, ans);
-                difference.setPixel(i, j, image.getPixel(i, j).minus(ans));
-
-                maxDiff = Integer.max(difference.getPixel(i, j).getColor(), maxDiff);
-                minDiff = Integer.min(difference.getPixel(i, j).getColor(), minDiff);
-            }
-        }
+        // quantization part
         Quantization quantization = new Quantization();
         quantization.quantize(minDiff, maxDiff + 1, levels);
 
-        for (int i = 0; i < difference.getWidth(); i++) {
-            for (int j = 0; j < difference.getHeight(); j++) {
-                if (j == 0 || i == 0){
-                    quantizedDifference.setPixel(i, j, difference.getPixel(i, j)) ;
-                }
-                else{
-                    int color = difference.getPixel(i, j).getColor();
-                    int code = quantization.getCode(color);
-                    quantizedDifference.setPixel(i, j, new Pixel(code, difference.getPixel(i, j).getAlpha()));
-                }
-            }
-        }
+        // fill quantized differences
+        fillQuantized(difference, quantizedDifference, quantization);
 
         // write in bin file
+        writeIntoFile(quantizedDifference, quantization);
     }
-    public void deCompress(Image quantizedDifference){
-        // quantizedDifference read from bin file
+    public void deCompress(){
+        Image quantizedDifference = new Image();
+        Quantization quantization = new Quantization();
+
+        // read from bin file
+        readFromFile(quantizedDifference, quantization);
 
         Image deQuantized = new Image(quantizedDifference.getWidth(), quantizedDifference.getHeight(), quantizedDifference.getPixels()) ;
         Image deCoded = new Image(quantizedDifference.getWidth(), quantizedDifference.getHeight(), quantizedDifference.getPixels()) ;
 
-        Quantization quantization = new Quantization() ;
-        // should load the table from bin file
+        // fill deQuantized differences
+        fillDeQuantized(deQuantized, quantizedDifference, quantization);
 
-        for (int i = 1; i < quantizedDifference.getWidth(); i++) {
-            for (int j = 1; j < quantizedDifference.getHeight(); j++) {
-                deQuantized.setPixel(i, j, new Pixel(quantization.getQ(quantizedDifference.getPixel(i, j)),
-                        quantizedDifference.getPixel(i, j).getAlpha()));
-            }
-        }
+        // fill deCoded Image
+        fillDecoded(deQuantized, deCoded);
 
-        for (int i = 1; i < deCoded.getWidth(); i++) {
-            for (int j = 1; j < deCoded.getHeight(); j++) {
-                Pixel a = deCoded.getPixel(i, j - 1);
-                Pixel b = deCoded.getPixel(i - 1, j - 1);
-                Pixel c = deCoded.getPixel(i - 1, j);
-                Pixel ans;
-
-                if (b.compareTo(min(a, c)) <= 0){
-                    ans = new Pixel(max(a, c));
-                }
-                else if (b.compareTo(max(a, c)) >= 0){
-                    ans = new Pixel(min(a, c));
-                }
-                else{
-                    ans = (a.add(c)).minus(b) ;
-                }
-                ans.setColor(ans.getColor() + deQuantized.getPixel(i, j).getColor()) ;
-                deCoded.setPixel(i, j, ans);
-            }
-        }
-
+        // write deCoded Image
         writeImage(deCoded.getPixels()) ;
     }
 }

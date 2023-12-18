@@ -1,6 +1,5 @@
 package Classes.Images;
 import Classes.Pixel.Pixel;
-import java.util.Arrays;
 
 public class Image {
     private Pixel[][] pixels ;

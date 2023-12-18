@@ -1,5 +1,4 @@
 package Classes.Pixel;
-import static java.lang.Math.abs;
 
 public class Pixel implements Comparable<Pixel>{
     int color;

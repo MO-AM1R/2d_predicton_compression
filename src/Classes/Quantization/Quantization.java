@@ -1,6 +1,5 @@
 package Classes.Quantization;
 import Classes.Pixel.Pixel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
