@@ -6,6 +6,42 @@ public class Image {
     private Pixel[][] pixels ;
 
     /**
+     *<pre>
+     *An Empty Constructor
+     *</pre>
+     */
+    public Image() {}
+
+    /**
+     *<pre>
+     *A Parameterized Constructor initialize the Pixel {@code width}, {@code height}
+     *</pre>
+     * @param width <strong style="color:'white'"> represent the image's width</strong>
+     * @param height <strong style="color:'white'"> represent the image's height</strong>
+     */
+    public Image(int width, int height){
+        pixels = new Pixel[width][height] ;
+    }
+
+    /**
+     *<pre>
+     *A Parameterized Constructor initialize the Pixel {@code width}, {@code height}
+     *and take the first row and column from {@code pixels}
+     *</pre>
+     * @param width <strong style="color:'white'"> represent the image's width</strong>
+     * @param height <strong style="color:'white'"> represent the image's height</strong>
+     * @param pixels <strong style="color:'white'"> represent the original image's pixels</strong>
+     */
+    public Image(int width, int height, Pixel[][] pixels){
+        this.pixels = new Pixel[width][height] ;
+        this.pixels[0] = pixels[0] ;
+
+        for (int i = 0; i < pixels[0].length; i++) {
+            this.pixels[i][0] = pixels[i][0];
+        }
+    }
+
+    /**
      <pre>
      *Method {@code toString} to convert the pixels 2D array to string and return it
      *</pre>
