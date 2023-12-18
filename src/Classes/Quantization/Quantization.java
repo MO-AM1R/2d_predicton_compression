@@ -34,4 +34,13 @@ public class Quantization {
         }
         return ans.toString();
     }
+
+    public int getCode(int color) {
+        for (Map.Entry<Integer, Pair> entry: quantizationTable.entrySet()) {
+            if (entry.getValue().range.get(0) <= color && entry.getValue().range.get(1) > color){
+                return entry.getKey() ;
+            }
+        }
+        return 0 ;
+    }
 }
