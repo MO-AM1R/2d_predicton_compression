@@ -1,12 +1,12 @@
 import Classes.Images.Image;
+import static Classes.Images.IOImage.readImage;
 import Classes.Prediction.Prediction;
-import static Classes.Images.IOImage.*;
 
 public class Main {
     public static void main(String[] args) {
         Image image = new Image() ;
         image.setPixels(readImage(System.getProperty("user.dir") + "\\src\\image.png"));
         Prediction prediction = new Prediction();
-        prediction.compress(image, 8);
+        prediction.compress(image, 4);
     }
 }

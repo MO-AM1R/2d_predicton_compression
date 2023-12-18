@@ -103,10 +103,10 @@ public class Pixel implements Comparable<Pixel>{
         return Integer.compare(color, o.color);
     }
     public Pixel minus(Pixel b) {
-        return new Pixel((this.color - b.getColor()), this.alpha - b.getAlpha());
+        return new Pixel(Math.max((this.color - b.getColor()), 0), this.alpha);
     }
     public Pixel add(Pixel b) {
-        return new Pixel((this.color + b.getColor()), (this.alpha + b.getAlpha()));
+        return new Pixel(Math.min((this.color + b.getColor()), 255), this.alpha);
     }
 
     public void setColor(int color) {

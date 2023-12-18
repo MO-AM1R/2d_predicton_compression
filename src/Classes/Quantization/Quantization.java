@@ -45,6 +45,10 @@ public class Quantization {
         return 0 ;
     }
 
+    public Map<Integer, Pair> getQuantizationTable() {
+        return quantizationTable;
+    }
+
     public int getQ(Pixel pixel) {
         return quantizationTable.get(pixel.getColor()).code ;
     }

@@ -77,6 +77,6 @@ public class PredictionHelper {
         read() ;
     }
     public static void writeIntoFile(Image quantizedDifference, Quantization quantization){
-        write("temp") ;
+        write(quantizedDifference, quantization) ;
     }
 }
