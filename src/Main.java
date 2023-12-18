@@ -9,6 +9,5 @@ public class Main {
         image.setPixels(readImage(System.getProperty("user.dir") + "\\src\\image.png"));
         Prediction prediction = new Prediction();
         prediction.compress(image);
-//        writeImage(image.getPixels());
     }
 }

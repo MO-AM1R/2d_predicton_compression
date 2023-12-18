@@ -49,9 +49,20 @@ public class Image {
      */
     @Override
     public String toString() {
-        return "Image{" +
-                "pixels=" + Arrays.deepToString(pixels) +
-                '}';
+        StringBuilder ans = new StringBuilder("Image{\n\t");
+        for (Pixel[] pixel : pixels) {
+            ans.append("[");
+            for (int j = 0; j < pixel.length; j++) {
+                if (j == pixel.length - 1) {
+                    ans.append(pixel[j]).append("]\n");
+                    break;
+                }
+                ans.append(pixel[j]).append(" ");
+            }
+            ans.append("\t");
+        }
+
+        return ans.append("\b}").toString();
     }
 
     /**
@@ -86,5 +97,11 @@ public class Image {
 
     public void setPixels(Pixel[][] pixels) {
         this.pixels = pixels ;
+    }
+    public void setPixel(int x, int y, Pixel pixel){
+        pixels[x][y] = pixel ;
+    }
+    public Pixel getPixel(int x, int y){
+        return pixels[x][y] ;
     }
 }
