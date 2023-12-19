@@ -45,8 +45,15 @@ public class PredictionHelper {
         for (int i = 1; i < deCoded.getWidth(); i++) {
             for (int j = 1; j < deCoded.getHeight(); j++) {
                 Pixel predictor = getPredictor(i, j, deCoded) ;
-
                 predictor.setColor(predictor.getColor() + deQuantized.getPixel(i, j).getColor()) ;
+
+                if (predictor.getColor() > 255){
+                    predictor.setColor(255);
+                }
+                if (predictor.getColor() < 0){
+                    predictor.setColor(0);
+                }
+
                 deCoded.setPixel(i, j, predictor);
             }
         }
@@ -74,7 +81,7 @@ public class PredictionHelper {
         }
     }
     public static void readFromFile(Image quantizedDifference, Quantization quantization){
-        read() ;
+        read(quantizedDifference, quantization) ;
     }
     public static void writeIntoFile(Image quantizedDifference, Quantization quantization){
         write(quantizedDifference, quantization) ;

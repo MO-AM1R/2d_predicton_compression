@@ -1,6 +1,7 @@
 package Classes.Pixel;
+import java.io.Serializable;
 
-public class Pixel implements Comparable<Pixel>{
+public class Pixel implements Comparable<Pixel>, Serializable {
     int color;
     int alpha ;
 
@@ -103,10 +104,10 @@ public class Pixel implements Comparable<Pixel>{
         return Integer.compare(color, o.color);
     }
     public Pixel minus(Pixel b) {
-        return new Pixel(Math.max((this.color - b.getColor()), 0), this.alpha);
+        return new Pixel(this.color - b.getColor(), this.alpha);
     }
     public Pixel add(Pixel b) {
-        return new Pixel(Math.min((this.color + b.getColor()), 255), this.alpha);
+        return new Pixel(this.color + b.getColor(), this.alpha);
     }
 
     public void setColor(int color) {

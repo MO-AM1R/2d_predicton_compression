@@ -1,12 +1,22 @@
 package Classes.BinaryFileHanlder;
+import Classes.Pixel.Pixel;
 import Classes.Quantization.Quantization;
 import Classes.Quantization.Pair;
 import Classes.Images.Image;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.io.*;
+
+//class WrapperContainer{
+//    Map<Integer, Pair> table ;
+//    Pixel[][] pixels ;
+//
+//
+//}
 
 public class BinaryFileHandler {
     public static void write(Image quantizedDifference, Quantization quantization){
@@ -14,32 +24,25 @@ public class BinaryFileHandler {
             if (!Files.exists(Paths.get(System.getProperty("user.dir") + "Output.bin"))){
                 Files.createFile(Paths.get(System.getProperty("user.dir") + "Output.bin")) ;
             }
-            FileOutputStream fileOutputStream = new FileOutputStream("Output.bin");
-            DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("Output.bin"));
             Map<Integer, Pair> table = quantization.getQuantizationTable() ;
+            Pixel[][] pixels = quantizedDifference.getPixels() ;
 
-            for (Map.Entry<Integer, Pair> entry : table.entrySet()) {
-                dataOutputStream.write(entry.getKey());
-                dataOutputStream.write(entry.getValue().range.get(0));
-                dataOutputStream.write(entry.getValue().range.get(1));
-                dataOutputStream.write(entry.getValue().code);
-            }
-            dataOutputStream.writeByte((byte) '\n');
-
-            for (int i = 0; i < quantizedDifference.getWidth(); i++) {
-                for (int j = 0; j < quantizedDifference.getHeight(); j++) {
-                    dataOutputStream.write(quantizedDifference.getPixel(i, j).getColor());
-                    dataOutputStream.write(quantizedDifference.getPixel(i, j).getAlpha());
-                }
-            }
-            dataOutputStream.close();
+            objectOutputStream.writeObject(table);
+            objectOutputStream.writeObject(pixels);
         }
         catch (IOException e){
             System.out.println(e.getMessage());
         }
     }
-    public static Object read(){
-        //read from bin
-        return null ;
+    public static void read(Image quantizedDifference, Quantization quantization){
+        try (FileInputStream fis = new FileInputStream("Output.bin")) {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(fis));
+
+            quantization.setTable((Map<Integer, Pair>)objectInputStream.readObject());
+            quantizedDifference.setPixels((Pixel[][]) objectInputStream.readObject());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

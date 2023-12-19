@@ -52,4 +52,8 @@ public class Quantization {
     public int getQ(Pixel pixel) {
         return quantizationTable.get(pixel.getColor()).code ;
     }
+
+    public void setTable(Map<Integer, Pair> table) {
+        quantizationTable = table ;
+    }
 }

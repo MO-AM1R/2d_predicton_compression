@@ -7,6 +7,7 @@ public class Main {
         Image image = new Image() ;
         image.setPixels(readImage(System.getProperty("user.dir") + "\\src\\image.png"));
         Prediction prediction = new Prediction();
-        prediction.compress(image, 4);
+        prediction.compress(image, 256);
+        prediction.deCompress();
     }
 }
