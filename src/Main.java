@@ -5,9 +5,9 @@ import Classes.Prediction.Prediction;
 public class Main {
     public static void main(String[] args) {
         Image image = new Image() ;
-        image.setPixels(readImage(System.getProperty("user.dir") + "\\src\\image.png"));
+        image.setPixels(readImage(System.getProperty("user.dir") + "\\src\\images\\image 1.png"));
         Prediction prediction = new Prediction();
-        prediction.compress(image, 256);
+        prediction.compress(image, 64);
         prediction.deCompress();
     }
 }
